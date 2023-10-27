@@ -45,4 +45,4 @@ jobs:
           content="${content//$'\n'/'%0A'}"
           content="${content//$'\r'/'%0D'}"
           # end of optional handling for multi line json
-          echo "${{ fromJson(content).include[0].config }}"
+          echo ${{ fromJson(content).include[0].config }}
