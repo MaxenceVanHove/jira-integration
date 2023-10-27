@@ -12,6 +12,11 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      jiraIssueContent:
+        description: 'Content of the Jira Issue'
+        required: true
+        type: string
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -34,3 +39,18 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
+  testJob:
+    name: ParsingTest
+    runs-on: ubuntu-latest
+    steps:
+      - id: set_var
+        run: |
+          content= ${{ inputs.jiraIssueContent }} 
+          # the following lines are only required for multi line json
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}"
+          # end of optional handling for multi line json
+          echo "::set-output name=issue::$content"
+      - run: |
+          echo "${{fromJson(steps.set_var.outputs.issue).Title}}"
