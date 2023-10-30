@@ -40,3 +40,4 @@ jobs:
       - id: set_var
         run: |
           echo "matrix={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
+          echo ${{ fromJSON(needs.job1.outputs.matrix) }}
